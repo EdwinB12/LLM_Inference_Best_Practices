@@ -6,7 +6,7 @@ import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from utils import get_n_word_prob_dict
 import sys
-
+from transformers import set_seed
 
 if __name__ == "__main__":
 
@@ -24,6 +24,7 @@ if __name__ == "__main__":
     TOKEN_PATH = ".secrets/hf_token.txt"
     MODEL_ID = "meta-llama/Meta-Llama-3-8B"
 
+    set_seed(42)
 
     # read huggingface token from hf_token.txt
     with open(TOKEN_PATH, "r") as f:
