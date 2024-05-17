@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 def get_n_word_prob_dict(prompt, model, tokenizer, n=5):
     """
     Returns a dictionary of the top n most likely words to be predicted next with the corresponding probability
@@ -23,3 +26,19 @@ def get_n_word_prob_dict(prompt, model, tokenizer, n=5):
 
     # Return dictionary of words and corresponding probability
     return  output_seq, dict(zip(top_n_words, probs[top_n_tokens]))
+
+def plot_logits(df, prompt, top_n=5):
+    unique_quantisation = df["Quantisation"].unique()
+    num_of_plots = len(unique_quantisation)
+
+    fig, axes = plt.subplots(1, num_of_plots, figsize=(10, 5), sharey=True)
+    fig.suptitle(f"Top n words and their probabilities for prompt: {prompt}")
+
+    df = df[((df['Prompt'] == prompt) & (df['n'] <= top_n))]
+
+    for i, quantisation in enumerate(unique_quantisation):
+        tmp_df = df[df["Quantisation"] == quantisation]
+        ax = axes[i]
+        sns.barplot(tmp_df, x='Top n Words', y='Top n Probabilities', ax=ax)
+        ax.set_title(f"Quantisation: {quantisation}")
+    return fig
