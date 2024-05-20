@@ -52,3 +52,16 @@ def flush():
   gc.collect()
   torch.cuda.empty_cache()
   torch.cuda.reset_peak_memory_stats()
+
+def get_layer_parameters(model, layer_idx=6):
+  layer_params = [params for params in model.model.layers[layer_idx].parameters()]
+  return layer_params
+
+def get_model_stats(model):
+  return {
+    "Peak Memory Allocated": bytes_to_giga_bytes(torch.cuda.max_memory_allocated()),
+    "Peak Memory Cached": bytes_to_giga_bytes(torch.cuda.max_memory_cached()),
+    "Current Memory Allocated": bytes_to_giga_bytes(torch.cuda.memory_allocated()),
+    "Current Memory Cached": bytes_to_giga_bytes(torch.cuda.memory_reserved()),
+    "Num of Parameters": model.model.num_parameters(),
+  }
