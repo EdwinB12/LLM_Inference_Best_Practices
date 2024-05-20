@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+import torch
+import gc
 
 def get_n_word_prob_dict(prompt, model, tokenizer, n=5):
     """
@@ -42,3 +44,11 @@ def plot_logits(df, prompt, top_n=5):
         sns.barplot(tmp_df, x='Top n Words', y='Top n Probabilities', ax=ax)
         ax.set_title(f"Quantisation: {quantisation}")
     return fig
+
+def bytes_to_giga_bytes(bytes):
+  return bytes / 1024 / 1024 / 1024
+
+def flush():
+  gc.collect()
+  torch.cuda.empty_cache()
+  torch.cuda.reset_peak_memory_stats()
