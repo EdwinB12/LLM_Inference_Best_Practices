@@ -39,6 +39,9 @@ def predict(prompt, model, tokenizer):
    output = model.generate(encoded_input, max_length=200)[0]
    time_taken = time.monotonic() - now
    output_seq = tokenizer.decode(output, skip_special_tokens=True)
+
+   print(type(output_seq))
+
    return output_seq, time_taken
 
 def plot_logits(df, prompt, top_n=5, figsize=(10, 5)):
