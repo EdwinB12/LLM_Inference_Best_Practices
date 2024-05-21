@@ -36,7 +36,7 @@ def predict(prompt, model, tokenizer):
 
    encoded_input = tokenizer.encode(prompt, return_tensors='pt').to(model.device)
    now = time.monotonic()
-   output = model.generate(encoded_input, max_length=200)
+   output = model.generate(encoded_input, max_length=200)[0]
    time_taken = time.monotonic() - now
    output_seq = tokenizer.decode(output, skip_special_tokens=True)
    return output_seq, time_taken
