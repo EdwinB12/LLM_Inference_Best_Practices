@@ -3,6 +3,7 @@ import seaborn as sns
 import torch
 import gc
 import time
+
 def get_n_word_prob_dict(prompt, model, tokenizer, n=5):
     """
     Returns a dictionary of the top n most likely words to be predicted next with the corresponding probability
@@ -30,6 +31,15 @@ def get_n_word_prob_dict(prompt, model, tokenizer, n=5):
 
     # Return dictionary of words and corresponding probability
     return  output_seq, dict(zip(top_n_words, probs[top_n_tokens])), time_taken
+
+def predict(prompt, model, tokenizer):
+
+   encoded_input = tokenizer.encode(prompt, return_tensors='pt').to(model.device)
+   now = time.monotonic()
+   output = model.generate(encoded_input, max_length=200)
+   time_taken = time.monotonic() - now
+   output_seq = tokenizer.decode(output, skip_special_tokens=True)
+   return output_seq, time_taken
 
 def plot_logits(df, prompt, top_n=5, figsize=(10, 5)):
     unique_quantisation = df["Quantisation"].unique()

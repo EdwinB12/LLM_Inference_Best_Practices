@@ -4,7 +4,7 @@ This file is used to test the impact of quantisation on the output ofthe LLama3 
 from huggingface_hub import login
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-from utils import get_n_word_prob_dict, get_model_stats, get_layer_parameters, flush, bytes_to_giga_bytes
+from utils import get_n_word_prob_dict, get_model_stats, get_layer_parameters, flush, bytes_to_giga_bytes, predict
 import sys
 from transformers import set_seed
 import torch
@@ -90,3 +90,12 @@ if __name__ == "__main__":
     main_df["Model"] = MODEL_ID
     main_df["Quantisation"] = quant_flag
     main_df.to_csv(f"output_{quant_flag}.csv", index=False)
+
+
+    # Vibe Test
+    prompt = "HPC facilities are awesome because"
+    output_seq = predict(prompt, model, tokenizer)
+
+    # Save output sequence
+    with open(f"output_sequence_{quant_flag}.txt", "w") as f:
+        f.write(output_seq)
