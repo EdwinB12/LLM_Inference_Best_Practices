@@ -40,8 +40,6 @@ def predict(prompt, model, tokenizer):
    time_taken = time.monotonic() - now
    output_seq = tokenizer.decode(output, skip_special_tokens=True)
 
-   print(type(output_seq))
-
    return output_seq, time_taken
 
 def plot_logits(df, prompt, top_n=5, figsize=(10, 5)):
