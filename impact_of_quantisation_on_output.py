@@ -74,11 +74,12 @@ if __name__ == "__main__":
     df_list = []
     for prompt in list_of_prompts:
         print(f"Prompt: {prompt}")
-        _, prob_dict = get_n_word_prob_dict(prompt, model, tokenizer, n=50)
+        _, prob_dict, inference_time = get_n_word_prob_dict(prompt, model, tokenizer, n=50)
         data_dict = {
             "Prompt": prompt,
             "Top n Words": list(prob_dict.keys()),
-            "Top n Probabilities": list(prob_dict.values())
+            "Top n Probabilities": list(prob_dict.values()),
+            "Inference_Time": inference_time
         }
 
         df = pd.DataFrame(data_dict)
@@ -88,4 +89,4 @@ if __name__ == "__main__":
     main_df["n"] += 1
     main_df["Model"] = MODEL_ID
     main_df["Quantisation"] = quant_flag
-    main_df.to_csv(f"output_{quant_flag}_1.csv", index=False)
+    main_df.to_csv(f"output_{quant_flag}.csv", index=False)
