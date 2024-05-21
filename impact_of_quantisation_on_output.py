@@ -94,9 +94,9 @@ if __name__ == "__main__":
 
     # Vibe Test
     prompt = "HPC facilities are awesome because"
-    output_seq = predict(prompt, model, tokenizer)
+    output_seq, time_taken = predict(prompt, model, tokenizer)
 
-    print(output_seq)
+    print(time_taken)
 
     # Save output sequence
     with open(f"output_sequence_{quant_flag}.txt", "w") as f:
