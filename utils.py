@@ -31,12 +31,12 @@ def get_n_word_prob_dict(prompt, model, tokenizer, n=5):
     # Return dictionary of words and corresponding probability
     return  output_seq, dict(zip(top_n_words, probs[top_n_tokens])), time_taken
 
-def plot_logits(df, prompt, top_n=5):
+def plot_logits(df, prompt, top_n=5, figsize=(10, 5)):
     unique_quantisation = df["Quantisation"].unique()
     num_of_plots = len(unique_quantisation)
 
-    fig, axes = plt.subplots(1, num_of_plots, figsize=(10, 5), sharey=True)
-    fig.suptitle(f"Top n words and their probabilities for prompt: {prompt}")
+    fig, axes = plt.subplots(1, num_of_plots, figsize=figsize, sharey=True)
+    fig.suptitle(f"{prompt} . . ")
 
     df = df[((df['Prompt'] == prompt) & (df['n'] <= top_n))]
 
@@ -44,7 +44,9 @@ def plot_logits(df, prompt, top_n=5):
         tmp_df = df[df["Quantisation"] == quantisation]
         ax = axes[i]
         sns.barplot(tmp_df, x='Top n Words', y='Top n Probabilities', ax=ax)
-        ax.set_title(f"Quantisation: {quantisation}")
+        ax.set_title(f"{quantisation}")
+        ax.set_xlabel(f"Top {top_n} Words")
+        ax.set_ylabel("Probability")
     return fig
 
 def bytes_to_giga_bytes(bytes):
