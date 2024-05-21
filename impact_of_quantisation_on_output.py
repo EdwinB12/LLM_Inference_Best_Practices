@@ -96,6 +96,8 @@ if __name__ == "__main__":
     prompt = "HPC facilities are awesome because"
     output_seq = predict(prompt, model, tokenizer)
 
+    print(output_seq)
+
     # Save output sequence
     with open(f"output_sequence_{quant_flag}.txt", "w") as f:
         f.write(output_seq)
