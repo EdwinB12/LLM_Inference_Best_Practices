@@ -33,6 +33,7 @@ if __name__ == "__main__":
 
     TOKEN_PATH = ".secrets/hf_token.txt"
     MODEL_ID = "meta-llama/Meta-Llama-3-70B"
+    MODEL_NAME = "Meta-Llama-3-70B"
 
     set_seed(42)
 
@@ -54,5 +55,21 @@ if __name__ == "__main__":
     model_stats = get_model_stats(model)
     # Save model stats as a csv
     model_stats_df = pd.DataFrame().from_dict([model_stats])
-    model_stats_df.to_csv(f"model_stats_{quant_flag}.csv", index=False)
+
+    # Repeat a prompt and measure inference speed
+    prompt = "Once upon a time"
+    inference_times = []
+    for i in range(10):
+        _, time_taken = predict(prompt, model, tokenizer)
+        inference_times.append(time_taken)
+
+    # Save inference times
+    mean_inference_time = np.mean(inference_times)
+    std_inference_time = np.std(inference_times)
+
+    # add to dataframe
+    model_stats_df['Mean Inference Time (s)'] = mean_inference_time
+    model_stats_df['Std Inference Time (s)'] = std_inference_time
+
+    model_stats_df.to_csv(f"model_stats_{MODEL_NAME}_{quant_flag}_{device_map}.csv", index=False)
 
